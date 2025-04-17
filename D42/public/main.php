@@ -19,24 +19,22 @@
     ];
 
         
-    /* 
-    **pseudocode** 
-    1- affichage des produits pour utilisateur dans le html: 
+    /***pseudocode***
+    1- affichage des produits pour l'utilisateur dans le html: 
     Boucle liste des products de $productCollection
-    boucle for each (i=0; i<productCollection.length; i++)
-    liens entre le nom et l' index [i] ->  titre = lien
+    boucle //JS  for each (i=0; i<productCollection.length; i++)
+    variable index liée au titre-lien: 
     $productCollection as $i => $p   htmlspecialchars($p->title)
-    cloturer boucle avec<?php endforeach; ?>
+    cloturer boucle avec <?php endforeach; ?>
         
-    
     2 - récup product:
     product cliqué.
     Conditions, ternaire:
-        Si $_GET['product'] existe dans l'URL -> productId= href product = $i 
+        Si $_GET['product']dans l'URL (isset) -> productId= href product = $i 
         sinon productId = null.
         
-        création variable $product (définir null par défaut)
-        conditions
+    *déclarer var $product null par défaut pour stocker id
+        conditions !=null +  isset
         $product= $productCollection[$productId]
         
     3- correspondance des index et conditions: 
@@ -52,11 +50,12 @@
 
     4- Affichage des indos du produit: 
     Cond: if product !=null -> liste infos. 
-    format des réponses string, num, prix  /100 et en €
-    cloturer avec endif en php
+    format réponses:  string, num, prix  /100 et en €
+    htmlspecialchars / number_format
+    cloturer avec <?php endif; ?>
+    ***/ 
 
-    */ 
-
+      
     //récup product
     $product=null;
     $productId = isset($_GET['product']) ? (int)$_GET['product'] : null; 
@@ -81,35 +80,36 @@
         <ul>
             <li>
                 <a href="?who=Anne">
-                    <img src="https://www.planetegrandesecoles.com/wp-content/uploads/2023/08/anne.jpg.webp" alt="Anne" width="100">
+                    <img src="https://www.planetegrandesecoles.com/wp-content/uploads/2023/08/anne.jpg.webp" alt="anne-picture" width="100">
                      Anne
                 </a>
             </li>
             <li>
                 <a href="?who=Eva">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/EVA_GREEN_CESAR_2020.jpg" alt="Eva" width="100">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/EVA_GREEN_CESAR_2020.jpg" alt="Eva-image" width="100">
                     Eva
                 </a>
             </li>
         </ul>
 
         <h1>Produits</h1>
-        <!--boucle liste de $productCollection-->
+        <!--boucle pour liste de $productCollection-->
         <ul>
+            <!-- récupérer index pour href -->
             <?php foreach ($productCollection as $i => $p): ?>
                 <li>
-                    <a href="?product=<?= $i ?>"><?= htmlspecialchars($p->title) ?></a>
+                  <a href="?product=<?= $i ?>"> <?= htmlspecialchars($p->title) ?>  </a>
                 </li>
             <?php endforeach; ?>
         </ul>
 
-        <!-- Si product !null alors affichage des infos $product-->
+        <!-- Si product !null alors afichage des infos $product-->
         <?php if ($product): ?>
             <h2>Détails du produit selectionne :</h2>
             <ul>
                 <li>Nom: <?= htmlspecialchars($product->title) ?></li>
                 <li> Couleur : <?= htmlspecialchars($product->color) ?></li>
-                <li>Prix : <?= number_format($product->price / 100) ?> € </li>
+                <li>Prix: <?= number_format($product->price / 100) ?> € </li>
             </ul>
         <?php endif; ?>
     </body>
